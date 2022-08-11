@@ -16,13 +16,12 @@ try {
   dummy = JSON.parse(readFileSync(process.env["HOME"] + "/.lghelper").toString()) as Options;
 }
 catch (e) {
-  console.log("请输入你希望存放文件的路径：")
-  console.log(process.stdin.isPaused());
   dummy = {
     dir: process.env["HOME"] + "/.luogu"
   };
   touch(process.env["HOME"] + "/.lghelper");
   writeFile(process.env["HOME"] + "/.lghelper", JSON.stringify(dummy));
+  console.log("配置文件路径：", process.env["HOME"] + "/.lghelper");
   console.log("配置初始化成功。");
 }
 
