@@ -1,6 +1,6 @@
 {
   "name": "lghelper",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Luogu Helper",
   "main": "dist/index.js",
   "repository": "https://github.com/DeCalvin2006/lghelper",
