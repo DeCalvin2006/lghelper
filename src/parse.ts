@@ -6,7 +6,6 @@ import { mkdir, touch } from "shelljs"
 import { exit } from "process";
 import { writeFileSync } from "fs";
 import { ProblemDetails } from "./luogu-api";
-import { number } from "yargs";
 function getProblemStatus (pid: string): void {
 
   const options = genGetOptions("/problem/" + pid);

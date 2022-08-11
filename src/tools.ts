@@ -1,5 +1,4 @@
 import { readFileSync, writeFileSync } from "fs";
-import { writeFile } from "fs/promises";
 import { RequestOptions } from "https"
 import { touch } from "shelljs";
 
