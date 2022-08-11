@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { writeFile } from "fs/promises";
 import { RequestOptions } from "https"
 import { touch } from "shelljs";
@@ -20,7 +20,7 @@ catch (e) {
     dir: process.env["HOME"] + "/.luogu"
   };
   touch(process.env["HOME"] + "/.lghelper");
-  writeFile(process.env["HOME"] + "/.lghelper", JSON.stringify(dummy));
+  writeFileSync(process.env["HOME"] + "/.lghelper", JSON.stringify(dummy));
   console.log("配置文件路径：", process.env["HOME"] + "/.lghelper");
   console.log("配置初始化成功。");
 }
