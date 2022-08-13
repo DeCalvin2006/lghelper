@@ -130,17 +130,14 @@ function parseProblem (problem: ProblemDetails) {
   mkdir("-p", newDir);
   console.log("创建目录:", newDir);
 
-  touch(newDir + problem.pid + ".md");
   writeFileSync(`${newDir}${problem.pid}.md`, genFullProblemContent(problem));
   console.log(`题目内容保存在 ${newDir}${problem.pid}.md`);
 
   console.log(`本题拥有 ${problem.samples.length} 个样例。正在生成测试数据文件……`);
   let count = 1;
   problem.samples.forEach(element => {
-    touch(`${newDir}/in${count}.txt`);
     writeFileSync(`${newDir}/in${count}.txt`, element[0]);
-    touch(`${newDir}/out${count}.txt`);
-    writeFileSync(`${newDir}/out${count}.txt`, element[1]);
+    writeFileSync(`${newDir}/ans${count}.txt`, element[1]);
     count++;
   });
   console.log("测试数据文件生成成功。");
