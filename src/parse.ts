@@ -74,9 +74,9 @@ ${problem.outputFormat}
   // 尾部，包括翻译、说明/提示和时间/空间限制。
   let back = `## 说明/提示
   ${problem.hint}
-  
-  
-  `
+
+
+`;
   if (problem.translation) {
     back = `## 翻译
 ${problem.translation}
@@ -94,7 +94,7 @@ ${problem.translation}
   const memory = problem.limits.memory;
   shortenLimits(memoryS, memory);
 
-  back += "内存限制。:\n"
+  back += "内存限制:\n"
   memoryS.forEach((element) => {
     back += `Test ${element.at(0)}-${element.at(1)}:${element.at(2)}KB` + "\n";
   });
