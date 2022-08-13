@@ -6,6 +6,11 @@ import { mkdir, touch } from "shelljs"
 import { exit } from "process";
 import { writeFileSync } from "fs";
 import { ProblemDetails } from "./luogu-api";
+
+/**
+ * 从OJ获取题目信息。
+ * @param pid 题目编号。
+ */
 function getProblemStatus (pid: string): void {
 
   const options = genGetOptions("/problem/" + pid);
@@ -52,7 +57,7 @@ ${problem.inputFormat}
 ${problem.outputFormat}
 ## 样例
 `;
-  // 中部包括样例以及翻译。
+  // 中部包括样例。
   let middle = "";
   let count = 1;
   problem.samples.forEach((element) => {
@@ -66,21 +71,21 @@ ${problem.outputFormat}
     middle += "```\n";
     count++;
   });
-  if (problem.translation) {
-    middle += `## 翻译
-${problem.translation}
-`
-  }
-  // 尾部，包括说明/提示和时间/空间限制。
+  // 尾部，包括翻译、说明/提示和时间/空间限制。
   let back = `## 说明/提示
-${problem.hint}
-
-
-`
+  ${problem.hint}
+  
+  
+  `
+  if (problem.translation) {
+    back = `## 翻译
+${problem.translation}
+`+ back
+  }
   const timeS = new Array<[number, number, number]>;
   const time = problem.limits.time;
   shortenLimits(timeS, time);
-  back += "Time Limits:\n"
+  back += "时间限制:\n"
   timeS.forEach((element) => {
     back += `Test ${element.at(0)}-${element.at(1)}:${element.at(2)}ms` + "\n";
   });
@@ -89,14 +94,24 @@ ${problem.hint}
   const memory = problem.limits.memory;
   shortenLimits(memoryS, memory);
 
-  back += "Memory Limits:\n"
+  back += "内存限制。:\n"
   memoryS.forEach((element) => {
     back += `Test ${element.at(0)}-${element.at(1)}:${element.at(2)}KB` + "\n";
   });
   return front + middle + back;
 }
 
-function shortenLimits (shorten: [number, number, number][], input: number[]) {
+/**
+ * 将数组归并成区间表示。
+ * @param shorten 输出。
+ * @param input 输入。
+ * @example 
+ * let shorten = new Array<[number, number, number]>;
+ * let input = [1, 1, 1, 2, 3];
+ * shortenLimits(shorten, input);
+ * console.log(shorten);// should be [[1,3,1],[4,4,2],[5,5,3]]
+ */
+function shortenLimits (shorten: [number, number, number][], input: number[]): void {
   shorten.push([1, 1, input[0]]);
   for (let i = 1; i < input.length; i++) {
     if (input.at(i) == shorten[shorten.length - 1][2]) {
@@ -110,16 +125,25 @@ function shortenLimits (shorten: [number, number, number][], input: number[]) {
  * @param data 得到的题目数据。
  */
 function parseProblem (problem: ProblemDetails) {
-  const newDir = options.dir + "/" + problem.pid + "/";
+  const newDir = `${options.dir}/${problem.pid}/`;
 
   mkdir("-p", newDir);
-  console.log("Created Dirs:", newDir);
+  console.log("创建目录:", newDir);
 
   touch(newDir + problem.pid + ".md");
-  writeFileSync(newDir + problem.pid + ".md", genFullProblemContent(problem));
-  console.log("Problem saved at " + newDir + problem.pid + ".md");
+  writeFileSync(`${newDir}${problem.pid}.md`, genFullProblemContent(problem));
+  console.log(`题目内容保存在 ${newDir}${problem.pid}.md`);
 
-  // console.log(genFullProblemContent(problem));
+  console.log(`本题拥有 ${problem.samples.length} 个样例。正在生成测试数据文件……`);
+  let count = 1;
+  problem.samples.forEach(element => {
+    touch(`${newDir}/in${count}.txt`);
+    writeFileSync(`${newDir}/in${count}.txt`, element[0]);
+    touch(`${newDir}/out${count}.txt`);
+    writeFileSync(`${newDir}/out${count}.txt`, element[1]);
+    count++;
+  });
+  console.log("测试数据文件生成成功。");
 }
 
 export const parse = createCommand("parse")
