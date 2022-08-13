@@ -17,7 +17,8 @@
     "watch": "tsc -w",
     "lint": "eslint --ext .ts --fix ./src",
     "main": "node dist/index.js",
-    "prepack": "tsc"
+    "prepack": "tsc",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -w"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
@@ -27,6 +28,8 @@
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "commitizen": "^4.2.5",
+    "conventional-changelog": "^3.1.25",
+    "conventional-changelog-cli": "^2.2.2",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.21.0",
     "tape": "^5.5.3",
